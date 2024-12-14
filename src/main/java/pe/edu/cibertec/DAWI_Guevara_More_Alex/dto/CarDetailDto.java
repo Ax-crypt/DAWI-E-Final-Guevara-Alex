@@ -4,7 +4,7 @@ import jakarta.persistence.Id;
 
 import java.util.Date;
 
-public record CarDetailDto(Integer CarId,
+public record CarDetailDto(Integer carId,
                            String make,
                            String model,
                            Integer year,

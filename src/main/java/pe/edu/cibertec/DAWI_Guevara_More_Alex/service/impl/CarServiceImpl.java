@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pe.edu.cibertec.DAWI_Guevara_More_Alex.dto.CarDetailDto;
 import pe.edu.cibertec.DAWI_Guevara_More_Alex.dto.CarDto;
+import pe.edu.cibertec.DAWI_Guevara_More_Alex.dto.CarUpdateDto;
 import pe.edu.cibertec.DAWI_Guevara_More_Alex.entity.Car;
 import pe.edu.cibertec.DAWI_Guevara_More_Alex.repository.CarRepository;
 import pe.edu.cibertec.DAWI_Guevara_More_Alex.service.CarService;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,13 +66,18 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public boolean updateCar(CarDto carDto) throws Exception {
-        Optional<Car> optional = carRepository.findById(carDto.carId());
+    public boolean updateCar(CarUpdateDto carUpdateDto) throws Exception {
+        Optional<Car> optional = carRepository.findById(carUpdateDto.carId());
         return optional.map(car ->{
-            car.setMake(carDto.make());
-            car.setModel(carDto.model());
-            car.setYear(carDto.year());
-            car.setColor(carDto.color());
+            car.setMake(carUpdateDto.make());
+            car.setModel(carUpdateDto.model());
+            car.setYear(carUpdateDto.year());
+            car.setOwnerName(carUpdateDto.ownerName());
+            car.setOwnerContact(carUpdateDto.ownerContact());
+            car.setMileage(carUpdateDto.mileage());
+            car.setEngineType(carUpdateDto.engineType());
+            car.setColor(carUpdateDto.color());
+            carRepository.save(car);
             return true;
                 }).orElse(false);
     }
@@ -86,7 +93,7 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public boolean addCar(CarDetailDto carDetailDto) throws Exception {
-        Optional<Car> optional = carRepository.findById(carDetailDto.CarId());
+        Optional<Car> optional = carRepository.findById(carDetailDto.carId());
         if (optional.isPresent()) {
             return false;
         } else {
@@ -94,11 +101,20 @@ public class CarServiceImpl implements CarService {
             car.setMake(carDetailDto.make());
             car.setModel(carDetailDto.model());
             car.setYear(carDetailDto.year());
+            car.setVin(carDetailDto.vin());
+            car.setLicensePlate(carDetailDto.licensePlate());
+            car.setOwnerName(carDetailDto.ownerName());
+            car.setOwnerContact(carDetailDto.ownerContact());
+            car.setPurchaseDate(new Date());
+            car.setMileage(carDetailDto.mileage());
+            car.setEngineType(carDetailDto.engineType());
             car.setColor(carDetailDto.color());
             car.setInsuranceCompany(carDetailDto.insuranceCompany());
-            car.setEngineType(carDetailDto.engineType());
-
+            car.setInsurancePolicyNumber(carDetailDto.insurancePolicyNumber());
+            car.setRegistrationExpirationDate(new Date());
+            car.setServiceDueDate(new Date());
+            carRepository.save(car);
+            return true;
         }
-        return false;
     }
 }
