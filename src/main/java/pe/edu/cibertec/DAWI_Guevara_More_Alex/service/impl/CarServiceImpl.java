@@ -39,7 +39,14 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public Optional<CarDto> getAllCarsById(int id) throws Exception {
-        return Optional.empty();
+        Optional<Car> optional = carRepository.findById(id);
+        return optional.map(car -> new CarDto(
+                car.getCarId(),
+                car.getMake(),
+                car.getModel(),
+                car.getYear(),
+                car.getColor()
+        ));
     }
 
     @Override
